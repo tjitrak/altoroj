@@ -38,6 +38,10 @@ public class AdminLoginServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		if (!ServletUtil.isValidCsrfToken(request)) {
+			response.sendError(HttpServletResponse.SC_FORBIDDEN);
+			return;
+		}
 		String password = request.getParameter("password");
 		if (password == null){
 			response.sendRedirect(request.getContextPath()+"/admin/login.jsp");

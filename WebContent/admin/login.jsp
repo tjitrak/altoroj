@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@page import="com.ibm.security.appscan.altoromutual.util.ServletUtil"%>
 
 <%
 /**
@@ -31,6 +32,7 @@ IBM AltoroJ
 		<!-- Password: Altoro1234 -->
 		
 		<form id="Default" method="post" action="doAdminLogin">
+		  <input type="hidden" name="csrfToken" value="<%= ServletUtil.getCsrfToken(request) %>">
 		<!-- <img id="captcha" src="getCaptcha.jsp" /><br /> -->
 		  <p>
 		<!--  add captcha input here -->
@@ -44,7 +46,7 @@ IBM AltoroJ
 			
 			if (error != null && error.trim().length() > 0){
 				request.getSession().removeAttribute("loginError");
-				out.print(error);
+				out.print(ServletUtil.sanitizeWeb(error));
 			}
 			%>
 		</span></p>

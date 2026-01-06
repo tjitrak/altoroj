@@ -26,6 +26,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ibm.security.appscan.altoromutual.util.ServletUtil;
+
 /**
  * This servlet allows the user to subscribe for the mailing list
  * Servlet implementation class SubscribeServlet
@@ -40,6 +42,10 @@ public class SubscribeServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		if (!ServletUtil.isValidCsrfToken(request)) {
+			response.sendError(HttpServletResponse.SC_FORBIDDEN);
+			return;
+		}
 		String email = request.getParameter("txtEmail");
 		if (email == null || !email.matches(LEGAL_EMAIL_ADDRESS)){
 			response.sendRedirect("index.jsp");

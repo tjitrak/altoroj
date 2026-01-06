@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@page import="com.ibm.security.appscan.altoromutual.util.ServletUtil"%>
 
 <%
 /**
@@ -37,12 +38,13 @@ IBM AltoroJ
 		
 		if (error != null && error.trim().length() > 0){
 			request.getSession().removeAttribute("loginError");
-			out.print(error);
+			out.print(ServletUtil.sanitizeWeb(error));
 		}
 		%>
 		</span></p>
 		
 		<form action="doLogin" method="post" name="login" id="login" onsubmit="return (confirminput(login));">
+		  <input type="hidden" name="csrfToken" value="<%= ServletUtil.getCsrfToken(request) %>">
 		  <table>
 		    <tr>
 		      <td>

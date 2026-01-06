@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ibm.security.appscan.altoromutual.util.DBUtil;
+import com.ibm.security.appscan.altoromutual.util.ServletUtil;
 
 /**
  * This servlet handles site admin operations
@@ -37,6 +38,10 @@ public class AdminServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		if (!ServletUtil.isValidCsrfToken(request)) {
+			response.sendError(HttpServletResponse.SC_FORBIDDEN);
+			return;
+		}
 		String message = null;
 		
 		//add account

@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page import="com.ibm.security.appscan.altoromutual.util.ServletUtil"%>
 
 <%
 /**
@@ -40,8 +42,9 @@ IBM AltoroJ
 		<h1>Customize Site Language</h1>
 		
 		<form method="post">
+		  <input type="hidden" name="csrfToken" value="<%= ServletUtil.getCsrfToken(request) %>">
 		  <p>
-		  Current Language: <%=(request.getParameter("lang")==null)?"":request.getParameter("lang")%>
+		  Current Language: <c:out value="${param.lang}"/>
 		  </p>
 		
 		  <p>

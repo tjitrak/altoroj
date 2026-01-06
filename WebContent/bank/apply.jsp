@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@page import="com.ibm.security.appscan.altoromutual.util.ServletUtil"%>
    
 <%
 /**
@@ -35,11 +36,13 @@ IBM AltoroJ
 		
 				if (error != null && error.trim().length() > 0){
 					request.getSession().removeAttribute("loginError");
-					out.print(error);
+					out.print(ServletUtil.sanitizeWeb(error));
 				}
 			%>
 			</span></p>			
-			<form method="post" name="Credit" action="ccApply"><table border=0><tr><td>Password:</td><td><input type="password" name="passwd"></td></tr><tr><td></td><td><input type="submit" name="Submit" value="Submit"></td></tr></table></form></span>
+			<form method="post" name="Credit" action="ccApply">
+			<input type="hidden" name="csrfToken" value="<%= ServletUtil.getCsrfToken(request) %>">
+			<table border=0><tr><td>Password:</td><td><input type="password" name="passwd"></td></tr><tr><td></td><td><input type="submit" name="Submit" value="Submit"></td></tr></table></form></span>
 		</div>
     </td>	
 </div>

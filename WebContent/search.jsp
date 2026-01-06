@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%
 /**
@@ -41,7 +42,7 @@ IBM AltoroJ
 		
 		<p>No results were found for the query:<br /><br />
 		
-		<%= query %>
+		<c:out value="${param.query}"/>
 		
 		</div>    
     </td>	

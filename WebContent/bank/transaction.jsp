@@ -3,6 +3,8 @@
 <%@page import="java.sql.SQLException"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page import="com.ibm.security.appscan.altoromutual.util.ServletUtil"%>
 
 <%
 /**
@@ -120,12 +122,13 @@ IBM AltoroJ
 		
 		<font style="bold" color="red"><%=error%></font>
 		<form id="Form1" name="Form1" method="post" action="showTransactions" onsubmit="return (confirminput(Form1));">
+		<input type="hidden" name="csrfToken" value="<%= ServletUtil.getCsrfToken(request) %>">
 		<table border="0" style="padding-bottom:10px;">
 		    <tr>
 		        <td valign=top>After</td>
-		        <td><input id="startDate" name="startDate" type="text" value="<%=(request.getParameter("startDate")==null)?"":request.getParameter("startDate")%>"/><br /><span class="credit">yyyy-mm-dd</span></td>
+		        <td><input id="startDate" name="startDate" type="text" value="<c:out value='${param.startDate}'/>"/><br /><span class="credit">yyyy-mm-dd</span></td>
 		        <td valign=top>Before</td>
-		        <td><input name="endDate" id="endDate" type="text" value="<%=(request.getParameter("endDate")==null)?"":request.getParameter("endDate") %>"/><br /><span class="credit">yyyy-mm-dd</span></td>
+		        <td><input name="endDate" id="endDate" type="text" value="<c:out value='${param.endDate}'/>"/><br /><span class="credit">yyyy-mm-dd</span></td>
 		        <td valign=top><input type=submit value=Submit /></td>
 		    </tr>
 		</table>
@@ -145,7 +148,7 @@ IBM AltoroJ
 				String date = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(transactions[i].getDate());
 			%>
 		
-				<tr><td><%=transactions[i].getTransactionId()%></td><td><%=date%></td><td><%=transactions[i].getAccountId()%></td><td><%=transactions[i].getTransactionType()%></td><td align="right"><%=amount%></td></tr>
+				<tr><td><%=transactions[i].getTransactionId()%></td><td><%=date%></td><td><%=transactions[i].getAccountId()%></td><td><%= ServletUtil.sanitizeWeb(transactions[i].getTransactionType()) %></td><td align="right"><%=amount%></td></tr>
 			<% } %>
 		<tr>
 		<!-- TODO PAGES: <td colspan="4"><span>1</span>&nbsp;<a href="javascript:__doPostBack('_ctl0$_ctl0$Content$Main$MyTransactions$_ctl54$_ctl1','')">2</a></td> -->

@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ibm.security.appscan.altoromutual.util.OperationsUtil;
+import com.ibm.security.appscan.altoromutual.util.ServletUtil;
 
 /**
  * Feedback submission servlet
@@ -40,6 +41,10 @@ public class FeedbackServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		if (!ServletUtil.isValidCsrfToken(request)) {
+			response.sendError(HttpServletResponse.SC_FORBIDDEN);
+			return;
+		}
 		//the feedback is not actually submitted
 		if (request.getParameter("comments") == null) {
 			response.sendRedirect("index.jsp");

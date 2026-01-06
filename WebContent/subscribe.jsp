@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page import="com.ibm.security.appscan.altoromutual.util.ServletUtil"%>
 
 <%
 /**
@@ -34,10 +36,11 @@ IBM AltoroJ
 			Please enter your email below and we will automatically notify of noteworthy events.</p>
 			
 			<form action="doSubscribe" method="post" name="subscribe" id="subscribe" onsubmit="return confirmEmail(txtEmail.value);">
+			  <input type="hidden" name="csrfToken" value="<%= ServletUtil.getCsrfToken(request) %>">
 			  <table>
 			    <tr>
 			      <td colspan="2">
-			        <div style="font-weight: bold; font-size: 12px; color: red;" id="message"><%=(request.getAttribute("message_subscribe")!=null)?request.getAttribute("message_subscribe"):"" %></div>
+			        <div style="font-weight: bold; font-size: 12px; color: red;" id="message"><c:out value="${message_subscribe}"/></div>
 			      </td>
 			    </tr>
 			    <tr>

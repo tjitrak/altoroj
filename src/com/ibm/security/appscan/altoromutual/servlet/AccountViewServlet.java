@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ibm.security.appscan.altoromutual.util.ServletUtil;
 
 /**
  * This servlet allows the users to view account and transaction information.
@@ -71,6 +72,10 @@ public class AccountViewServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//show transactions within the specified date range (if any)
 		if (request.getRequestURL().toString().endsWith("showTransactions")){
+			if (!ServletUtil.isValidCsrfToken(request)) {
+				response.sendError(HttpServletResponse.SC_FORBIDDEN);
+				return;
+			}
 			String startTime = request.getParameter("startDate");
 			String endTime = request.getParameter("endDate");
 			
