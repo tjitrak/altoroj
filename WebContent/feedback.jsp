@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@page import="com.ibm.security.appscan.altoromutual.util.ServletUtil"%>
     
 <%
 /**
@@ -44,6 +45,7 @@ IBM AltoroJ
 		account information in a message sent from here.</p>
 		
 		<form name="cmt" method="post" action="sendFeedback">
+		<input type="hidden" name="csrfToken" value="<%= ServletUtil.getCsrfToken(request) %>">
 		
 		<!--- Dave- Hard code this into the final script - Possible security problem.
 		  Re-generated every Tuesday and old files are saved to .bak format at L:\backup\website\oldfiles    --->
@@ -56,7 +58,7 @@ IBM AltoroJ
 		  </tr>
 		  <tr>
 		    <td align=right>Your Name:</td>
-		    <td valign=top><input name="name" size=25 type=text value = "<%= ((user != null && user.getFirstName() != null)?user.getFirstName()+" ":"") + ((user != null && user.getLastName() != null)?user.getLastName():"") %>"></td>
+		    <td valign=top><input name="name" size=25 type=text value = "<%= ServletUtil.sanitizeWeb(((user != null && user.getFirstName() != null)?user.getFirstName()+" ":"") + ((user != null && user.getLastName() != null)?user.getLastName():"")) %>"></td>
 		  </tr>
 		  <tr>
 		    <td align=right>Your Email Address:</td>

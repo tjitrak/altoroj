@@ -27,8 +27,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.security.SecureRandom;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 import java.util.regex.Pattern;
@@ -66,6 +68,7 @@ public class ServletUtil {
 	public static boolean swaggerInitialized = false;
 
 	public static final String ALTORO_COOKIE = "AltoroAccounts";
+	private static final String CSRF_TOKEN_SESSION_KEY = "csrfToken";
 
 	public static final String EMAIL_REGEXP = "^..*@..*\\...*$";
 
@@ -246,6 +249,13 @@ public class ServletUtil {
 		return StringEscapeUtils.escapeHtml(data);
 	}
 
+	public static String sanitizeJson(String data) {
+		if (data == null) {
+			return "";
+		}
+		return StringEscapeUtils.escapeJavaScript(data);
+	}
+
 	public static String sanitzieHtmlWithRegex(String input) {
 		if (XSS_REGEXP.matcher(input).matches()) {
 			return "";
@@ -350,6 +360,32 @@ public class ServletUtil {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	public static String getCsrfToken(HttpServletRequest request) {
+		HttpSession session = request.getSession(true);
+		String token = (String) session.getAttribute(CSRF_TOKEN_SESSION_KEY);
+		if (token == null) {
+			token = generateCsrfToken();
+			session.setAttribute(CSRF_TOKEN_SESSION_KEY, token);
+		}
+		return token;
+	}
+
+	public static boolean isValidCsrfToken(HttpServletRequest request) {
+		HttpSession session = request.getSession(false);
+		if (session == null) {
+			return false;
+		}
+		String expected = (String) session.getAttribute(CSRF_TOKEN_SESSION_KEY);
+		String provided = request.getParameter("csrfToken");
+		return expected != null && provided != null && expected.equals(provided);
+	}
+
+	private static String generateCsrfToken() {
+		byte[] bytes = new byte[32];
+		new SecureRandom().nextBytes(bytes);
+		return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
 	}
 	
 	static public boolean isLoggedin(HttpServletRequest request){

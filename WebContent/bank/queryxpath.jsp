@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-
 <%
 /**
  This application is for demonstration use only. It contains known application security
@@ -33,7 +32,14 @@ IBM AltoroJ
 			  Search our news articles database
 			  <br /><br />
 				<input type="hidden" id=content" name="content" value="queryxpath.jsp"/>
-				<input type="text" id="query" name="query" width=450 value="<%=(request.getParameter("query")==null)?"Enter title (e.g. Watchfire)":request.getParameter("query")%>"/>
+				<%
+					String queryValue = request.getParameter("query");
+					if (queryValue == null) {
+						queryValue = "Enter title (e.g. Watchfire)";
+					}
+					queryValue = ServletUtil.sanitizeWeb(queryValue);
+				%>
+				<input type="text" id="query" name="query" width=450 value="<%= queryValue %>"/>
 				<input type="submit" width=75 id="Button1" value="Query">
 			  <br /><br />
 			<%
@@ -44,7 +50,7 @@ IBM AltoroJ
 				else {
 					out.println("Found news title:<br/>");
 					for(String result:results)
-				out.println(result+"<br/>");
+				out.println(ServletUtil.sanitizeWeb(result)+"<br/>");
 				}
 			}
 			%>

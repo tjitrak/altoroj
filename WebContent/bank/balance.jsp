@@ -1,5 +1,6 @@
 <%@page import="com.ibm.security.appscan.altoromutual.model.Transaction"%>
 <%@page import="com.ibm.security.appscan.altoromutual.util.DBUtil"%>
+<%@page import="com.ibm.security.appscan.altoromutual.util.ServletUtil"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 
@@ -54,7 +55,7 @@ IBM AltoroJ
 		<!-- To modify account information do not connect to SQL source directly.  Make all changes
 		through the admin page. -->
 		
-		<h1>Account History - <%=accountName%></h1>
+		<h1>Account History - <%= ServletUtil.sanitizeWeb(accountName) %></h1>
 		
 		<table width="590" border="0">
 		  <tr>
@@ -69,7 +70,7 @@ IBM AltoroJ
 			           	<select size="1" name="listAccounts" id="listAccounts">
 							<%
 								for (Account account: accounts){
-									out.println("<option value=\""+account.getAccountId()+"\">" + account.getAccountId() + " " + account.getAccountName() + "</option>");
+									out.println("<option value=\""+account.getAccountId()+"\">" + account.getAccountId() + " " + ServletUtil.sanitizeWeb(account.getAccountName()) + "</option>");
 								}
 								double dblBalance = Account.getAccount(paramName).getBalance();
 								String format = (dblBalance<1)?"$0.00":"$.00";
@@ -108,7 +109,7 @@ IBM AltoroJ
 					String amount = new DecimalFormat(dollarFormat).format(dblAmt);
 					String date = new SimpleDateFormat("yyyy-MM-dd").format(transaction.getDate());
 		      %>
-		      <tr><td width=99><%=date%></td><td width=292><%=transaction.getTransactionType()%></td><td width=84 align=right><%=amount%></td></tr>
+		      <tr><td width=99><%=date%></td><td width=292><%= ServletUtil.sanitizeWeb(transaction.getTransactionType()) %></td><td width=84 align=right><%=amount%></td></tr>
 		      <% } %>
 		      </table></DIV>
 		    </td>

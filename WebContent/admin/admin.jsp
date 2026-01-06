@@ -58,7 +58,7 @@ IBM AltoroJ
 		java.lang.String error = (String)request.getSession().getAttribute("message");
 		
 		if (error != null && error.trim().length() > 0){
-			out.print(error);
+			out.print(ServletUtil.sanitizeWeb(error));
 		}
 		%>
 		</span></p>
@@ -68,6 +68,7 @@ IBM AltoroJ
 		<table width="100%" border="0">
 		<!-- action="addAccount" -->
 		<form id="addAccount" name="addAccount" action="<%=ServletUtil.isAppPropertyTrue("enableAdminFunctions")?"addAccount":"" %>" method="post">
+		  <input type="hidden" name="csrfToken" value="<%= ServletUtil.getCsrfToken(request) %>">
 		  <tr>
 		    <td colspan="4">
 		      <h2>Add an account to an existing user</h2>
@@ -87,7 +88,7 @@ IBM AltoroJ
 		    <td>
 		      	<select name="username" id="username" size="1">
 					<% for (String user:users){ %>
-					<option value="<%=user%>"><%=user%></option>
+					<option value="<%= ServletUtil.sanitizeWeb(user) %>"><%= ServletUtil.sanitizeWeb(user) %></option>
 					<%} %>
 				</select>
 		    </td>
@@ -104,6 +105,7 @@ IBM AltoroJ
  
  		<!-- action="changePassword" -->
 		  <form id="changePass" name="changePass" action="<%=ServletUtil.getAppProperty("enableAdminFunctions").equalsIgnoreCase("true")?"changePass":"" %>" method="post" onsubmit="return confirmpass(this);">
+		  <input type="hidden" name="csrfToken" value="<%= ServletUtil.getCsrfToken(request) %>">
 		  <tr>
 		    <td colspan="4"><h2><br><br>Change user's password</h2></td>
 		  </tr>
@@ -123,7 +125,7 @@ IBM AltoroJ
 		    <td>
 		        <select name="username" id="username" size="1">
 					<% for (String user:users){ %>
-					<option value="<%=user%>"><%=user%></option>
+					<option value="<%= ServletUtil.sanitizeWeb(user) %>"><%= ServletUtil.sanitizeWeb(user) %></option>
 					<%} %>
 				</select>
 		    </td>
@@ -140,6 +142,7 @@ IBM AltoroJ
 		  </form>
 		  <!-- action="addUser" -->
 		  <form method="post" name="addUser" action="<%=ServletUtil.getAppProperty("enableAdminFunctions").equalsIgnoreCase("true")?"addUser":"" %>" id="addUser" onsubmit="return confirmpass(this);">		  
+		  <input type="hidden" name="csrfToken" value="<%= ServletUtil.getCsrfToken(request) %>">
 		  <tr>
 		    <td colspan="4"><h2><br><br>Add an new user</h2></td>
 		  </tr>

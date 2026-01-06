@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@page import="com.ibm.security.appscan.altoromutual.util.ServletUtil"%>
 
 <%
 /**
@@ -56,6 +57,7 @@ IBM AltoroJ
 		<div class="fl" style="width: 99%;">
 		
 		<form id="tForm" name="tForm" method="post" action="doTransfer" onsubmit="return (confirminput(tForm));">
+		<input type="hidden" name="csrfToken" value="<%= ServletUtil.getCsrfToken(request) %>">
 		
 		<h1>Transfer Funds</h1>
 		
@@ -67,7 +69,7 @@ IBM AltoroJ
 			  <select size="1" id="fromAccount" name="fromAccount">
 				<% 
 				for (Account account: user.getAccounts()){
-					out.println("<option value=\""+account.getAccountId()+"\" >" + account.getAccountId() + " " + account.getAccountName() + "</option>");
+					out.println("<option value=\""+account.getAccountId()+"\" >" + account.getAccountId() + " " + ServletUtil.sanitizeWeb(account.getAccountName()) + "</option>");
 				}
 				%>
 			  </select>
@@ -79,7 +81,7 @@ IBM AltoroJ
 			  <select size="1" id="toAccount" name="toAccount">
 				<% 
 				for (Account account: user.getAccounts()){
-					out.println("<option value=\""+account.getAccountId()+"\">" + account.getAccountId() + " " + account.getAccountName() + "</option>");
+					out.println("<option value=\""+account.getAccountId()+"\">" + account.getAccountId() + " " + ServletUtil.sanitizeWeb(account.getAccountName()) + "</option>");
 				}
 				%>
 			  </select>
@@ -98,7 +100,7 @@ IBM AltoroJ
 		  </tr>
 		  <tr>
 		    <td colspan="2" align="center">
-		    <span id="_ctl0__ctl0_Content_Main_postResp" align="center"><span style='color: Red'><%=(request.getAttribute("message")==null)?"":request.getAttribute("message") %></span></span>
+		    <span id="_ctl0__ctl0_Content_Main_postResp" align="center"><span style='color: Red'><%=(request.getAttribute("message")==null)?"":ServletUtil.sanitizeWeb(String.valueOf(request.getAttribute("message"))) %></span></span>
 		    <span id="soapResp" name="soapResp" align="center" />
 		    </td>
 		  </tr>

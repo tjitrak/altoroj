@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@page import="com.ibm.security.appscan.altoromutual.util.ServletUtil"%>
 
 <%
 /**
@@ -33,7 +34,7 @@ IBM AltoroJ
 					com.ibm.security.appscan.altoromutual.model.User user = (com.ibm.security.appscan.altoromutual.model.User)request.getSession().getAttribute("user");
 				%>
 		
-		<h1>Hello <%= user.getFirstName() + " " + user.getLastName() %>
+		<h1>Hello <%= ServletUtil.sanitizeWeb(user.getFirstName() + " " + user.getLastName()) %>
 		  </h1>
 		
 		<p>
@@ -48,7 +49,7 @@ IBM AltoroJ
 			  <select size="1" name="listAccounts" id="listAccounts">
 				<% 
 				for (Account account: user.getAccounts()){
-					out.println("<option value=\""+account.getAccountId()+"\" >" + account.getAccountId() + " " + account.getAccountName() + "</option>");
+					out.println("<option value=\""+account.getAccountId()+"\" >" + account.getAccountId() + " " + ServletUtil.sanitizeWeb(account.getAccountName()) + "</option>");
 				}
 				%>
 			  </select>
