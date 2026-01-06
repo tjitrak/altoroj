@@ -77,11 +77,16 @@ public class LoginServlet extends HttpServlet {
 		
 		try {
 			username = request.getParameter("uid");
-			if (username != null)
-				username = username.trim().toLowerCase();
-			
 			String password = request.getParameter("passw");
+
+			if (username == null || password == null)
+				throw new Exception("Login Failed: We're sorry, but this username or password was not found in our system. Please try again.");
+
+			username = username.trim().toLowerCase();
 			password = password.trim().toLowerCase(); //in real life the password usually is case sensitive and this cast would not be done
+
+			if (username.length() == 0 || password.length() == 0)
+				throw new Exception("Login Failed: We're sorry, but this username or password was not found in our system. Please try again.");
 			
 			if (!DBUtil.isValidUser(username, password)){
 				Log4AltoroJ.getInstance().logError("Login failed >>> User: " +username + " >>> Password: " + password);
