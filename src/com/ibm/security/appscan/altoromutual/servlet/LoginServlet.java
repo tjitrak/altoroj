@@ -89,7 +89,7 @@ public class LoginServlet extends HttpServlet {
 				throw new Exception("Login Failed: We're sorry, but this username or password was not found in our system. Please try again.");
 			
 			if (!DBUtil.isValidUser(username, password)){
-				Log4AltoroJ.getInstance().logError("Login failed >>> User: " +username + " >>> Password: " + password);
+				Log4AltoroJ.getInstance().logError("Login failed >>> User: " +username);
 				throw new Exception("Login Failed: We're sorry, but this username or password was not found in our system. Please try again.");
 			}
 		} catch (Exception ex) {
